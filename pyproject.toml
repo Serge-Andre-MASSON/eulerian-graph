@@ -20,10 +20,11 @@ classifiers = [
     "graph theory",
 ]
 
-dynamic = ["dependencies"]
+dependencies = []
 
-[tool.setuptools.dynamic]
-dependencies = {file = ["src/requirements.txt"]}
+[project.optional-dependencies]
+# development dependency groups
+test = ["pytest-watch==4.2.0"]
 
 [tool.setuptools.packages.find]
 where = ["src"] 
