@@ -23,8 +23,10 @@ classifiers = [
 dependencies = []
 
 [project.optional-dependencies]
-# development dependency groups
 test = ["pytest-watch==4.2.0"]
+streamlit = ["streamlit==1.23.1"]
+dev = ["eulerian-graph[test, streamlit]"]
+
 
 [tool.setuptools.packages.find]
 where = ["src"] 
