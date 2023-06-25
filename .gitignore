@@ -1,0 +1,10 @@
+# venv
+.venv
+
+# cache
+__pycache__
+.pytest_cache
+.hypothesis
+
+# notebooks
+*.ipynb
