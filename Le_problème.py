@@ -1,44 +1,48 @@
+from eulerian_graph.draw import draw
 from matplotlib import pyplot as plt
 import streamlit as st
+
+from eulerian_graph.graph import Graph
 
 
 st.set_page_config(page_title="Le problème")
 # st.sidebar.markdown("# Les septs ponts de Koenigsberg")
 
 st.markdown("# Le problème")
-st.write("""Jusqu'en 1735, les habitants de Koenigsberg se demandent s'il est possible de visiter la ville en empruntant chacun de ses ponts une et une seule fois.""")
+st.write("""Jusqu'en 1735, les habitants de Koenigsberg se demandent s'il est possible de visiter leur ville en empruntant chacun de ses ponts une et une seule fois.""")
 st.image("Konigsberg_bridges.png")
-st.write("""C'est finalement Leonard Euler qui apporte la réponse, négative, à cette question. Le succès de son approche pour résoudre le problème commence avec une modélisation du problème sous forme de graphe: """)
+st.write("""C'est finalement Leonard Euler qui apporte la réponse, négative, à cette question. Son approche pour résoudre le problème commence avec une modélisation du problème sous forme d'un graphe où chaque sommet est une berge et chaque arête est un pont: """)
 
 
-# G = Graph()
-# edges = [{1, 2}, {1, 2}, {1, 3}, {1, 4}, {1, 4}, {2, 3}, {3, 4}]
-# G.add_edges(edges)
+G = Graph()
+edges = [{1, 2}, {1, 2}, {1, 3}, {1, 4}, {1, 4}, {2, 3}, {3, 4}]
+G.add_edges_from(edges)
 
-# fig, ax = plt.subplots()
-# G.draw(ax)
-# st.pyplot(fig)
+fig, ax = plt.subplots()
+draw(G, ax=ax)
+st.pyplot(fig)
 
-st.write("""Chaque sommet est une berge et chaque arête est un pont.""")
+st.write("""Ce qu'on l'on cherche s'appelle une "chaine eulérienne": un chemin le long des arêtes du graphe, les utilisant toutes une seule fois. Si ce chemin revient à son point de départ alors on parle de "cycle eulerien".""")
 
-st.write("""Le nom mathématique de ce qu'on l'on cherche est une "chaine eulérienne": un chemin le long des arêtes du graphe, les utilisant toutes une seule fois.""")
+st.write("""Lorsqu'on parcourt un chemin sur un graphe et que l'on rencontre un sommet d'ordre $2n + 1$ (nombre d'arête(s) issue(s) du sommet), le seul moyen de parcourir une seule fois les $2n$ arêtes encore non utilisées est de faire $n$ aller-retour sur ce sommet jusqu'à s'y retrouver bloqué.""")
+st.write("""On en déduit qu'un sommet d'ordre impair est soit le premier soit le dernier d'une chaîne. Il ne peut donc pas y en avoir plus que deux. Autrement dit""")
+st.markdown(
+    r"""$$ \text{G admet une chaîne eulerienne} \Rightarrow \text{G a au plus 2 sommets d'ordre impair} $$""")
 
-st.write("""Pour la suite du raisonnement il faut définir la notion d'ordre d'un sommet : c'est le nombre d'arête(s) qui en sont issue(s).""")
+st.write("""On peut réécrire cette condition sous la forme""")
+st.markdown(
+    r"""$$ \text{G admet une chaîne eulerienne} \Rightarrow \text{G a 0 ou 2 sommets d'ordre impair} $$""")
+st.write("""en utilisant le fait qu'un graphe quelconque ne peut avoir qu'un nombre pair de sommet d'ordre impair, ce qui est du au fait que la somme des ordres de tous les sommet du graphe est nombre d'arête multiplié par deux.""")
 
-st.write("""Supposons qu'il y ait une chaîne eulerienne dans ce graphe et essayons de la parcourir.""")
-st.write("""De quelque sommet s0 que l'on vienne, le sommet s1 que l'on rencontre est d'ordre impair. On est donc dans une situation telle que celle ci""")
-# G = Graph()
-# G.add_edges([("s0", "s1"), ("s1", "s2"), ("s1", "s3")])
-# fig, ax = plt.subplots()
-# G.draw(ax)
-# st.pyplot(fig)
+st.write("""On peut aussi écrire une condition nécessaire pour l'existence d'un cycle :""")
+st.markdown(
+    r"""$$ \text{G admet un cycle eulerien} \Rightarrow \text{G n'a aucun sommets d'ordre impair} $$""")
+st.write("""Pour s'en convaincre il suffit de voir qu'un cycle est un cas particulier de chaîne.""")
 
-st.write("""Quelque soit l'arête que l'on emprunte pour quitter s1 et quelque soit ce qui se passe après s1, on est assuré de revenir vers s1 en passant par par l'autre arête, puisque l'on est sur une chaîne. Ainsi, s1 est le dernier sommet de la chaîne puisqu'une fois revenu il n'y a plus d'issue.
-Ce raisonnement s'applique aussi lorsque l'ordre du sommet s1 est 5, ce qui induit juste un aller retour de plus.""")
+st.write("""S'il y a deux sommets d'ordre impair, les points de départ et d'arrivée sont distincts donc ce n'est pas un cycle. La seule possibilité restante est qu'il n'y en ait aucun.""")
 
-st.write("""Si l'on quitte s1 pour s2, alors on retrouve dans la même situation puisque s2 est aussi d'ordre impair et le même raisonnement implique que s2 lui aussi doit être le dernier sommet de la chaîne, ce qui est absurde. Il n'existe donc pas de chaîne eulerienne dans ce graphe.""")
 
-st.write("""En particulier, il n'existe pas de cycle eulérien, une chaîne qui reviendrait à son point de départ, non plus.""")
+st.write("""Le graphe modélisant le problème des ponts de Koenigsberg possédant quatre sommets d'ordre impair, il n'admet ni chaîne ni cycle et on ne peut donc pas visiter la ville en utilisant tous les ponts une seule fois.""")
 
 
 # edges = ""
