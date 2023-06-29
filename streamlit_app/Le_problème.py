@@ -9,7 +9,7 @@ st.set_page_config(page_title="Le problème")
 
 st.markdown("# Le problème")
 st.write("""Jusqu'en 1735, les habitants de Koenigsberg se demandent s'il est possible de visiter leur ville en empruntant chacun de ses ponts une et une seule fois.""")
-st.image("Konigsberg_bridges.png")
+st.image("streamlit_app/Koenigsberg_bridges.png")
 st.write("""C'est finalement Leonard Euler qui apporte la réponse, négative, à cette question. Son approche pour résoudre le problème commence avec une modélisation du problème sous forme d'un graphe où chaque sommet est une berge et chaque arête est un pont: """)
 
 
