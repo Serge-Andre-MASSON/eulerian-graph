@@ -6,7 +6,6 @@ from eulerian_graph.graph import Graph
 
 
 st.set_page_config(page_title="Le problème")
-# st.sidebar.markdown("# Les septs ponts de Koenigsberg")
 
 st.markdown("# Le problème")
 st.write("""Jusqu'en 1735, les habitants de Koenigsberg se demandent s'il est possible de visiter leur ville en empruntant chacun de ses ponts une et une seule fois.""")

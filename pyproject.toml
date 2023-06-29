@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "eulerian-graph"
+version = "0.1.0"
+description = "A streamlit app talking about the seven bridges of Koenigsberg"
+authors = ["Serge <serge.andre.masson@gmail.com>"]
+readme = "README.md"
+packages = [{include = "eulerian_graph"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+networkx = "^3.1"
+matplotlib = "^3.7.1"
+streamlit = "^1.24.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest-watch = "^4.2.0"
+hypothesis = "^6.80.0"
+ipykernel = "^6.23.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
