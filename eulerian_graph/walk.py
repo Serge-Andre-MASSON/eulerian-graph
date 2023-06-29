@@ -1,12 +1,15 @@
 from copy import deepcopy
 from enum import Enum
 from random import choice
+import random
 
 from eulerian_graph.graph import Graph
 
 
-def _recursive_walk(G: Graph, node: int = None, path: list = []):
-
+def recursive_walk(G: Graph, node: int = None, path: list = []):
+    if not G.is_eulerian():
+        return []
+    G = deepcopy(G)
     if node is None:
         node = get_starting_node(G)
 
@@ -28,20 +31,37 @@ def _recursive_walk(G: Graph, node: int = None, path: list = []):
 
     if G.get_edges():
         node = get_an_other_node_with_edges(G, path)
-        path = _recursive_walk(G, node, path)
+        path = recursive_walk(G, node, path)
 
     return path
 
 
-def recursive_walk(G: Graph, node: int = None, path=[]):
+def stack_walk(G: Graph, node: int = None, path=None):
     if not G.is_eulerian():
         return []
     G = deepcopy(G)
-    return _recursive_walk(G, node, path)
+    if node is None:
+        node = get_starting_node(G)
+    node_stack = [node]
 
+    if path is None:
+        path = []
 
-def stack_walk(G, start: int = None):
-    pass
+    while node_stack:
+        node = node_stack[-1]
+
+        edges = G.get_edges(node)
+        if edges:
+            u, v = random.choice(edges)
+            node = u if node == v else v
+            node_stack.append(node)
+            G.remove_edge(u, v)
+
+        else:
+            last_node = node_stack.pop()
+            path.append(last_node)
+
+    return path[::-1]
 
 
 def get_starting_node(G: Graph):
@@ -55,58 +75,6 @@ def get_an_other_node_with_edges(G: Graph, path):
     for node in path:
         if G.get_edges(node):
             return node
-
-
-class Method(Enum):
-    RECURSIVE = recursive_walk
-    STACK = stack_walk
-
-
-def walk(G, start: int = None, method: Method = Method.RECURSIVE):
-    if method is Method.RECURSIVE:
-        return recursive_walk(G, start)
-    else:
-        return stack_walk(G, start)
-
-
-# def walk(G_: Graph, start=None, path=None, methode: str = "recursive"):
-#     G = deepcopy(G_)  # Don't want to alter the original graph
-#     odd_nodes = [node for node in G.nodes if G.get_node_order(node) % 2]
-#     if len(odd_nodes) > 2:
-#         return []
-
-#     if start is None:
-#         if odd_nodes:
-#             start = choice(odd_nodes)
-#         else:
-#             start = choice(G.nodes)
-#     if not path:
-#         path = [start]
-#     while True:
-
-#         if not G.edges:
-#             break
-
-#         edges = G.get_edges_from_node(start)
-
-#         if not edges:
-#             G.remove_node(start)
-#             for node in path[1:-1]:
-#                 if G.get_edges_from_node(node):
-#                     node_index = path.index(node)
-#                     return insert_list(
-#                         walk(G, start=node),
-#                         into_list=path,
-#                         at_index=node_index)
-#             return path
-
-#         edge = choice(edges)
-#         G.remove_edge(*edge)
-
-#         start = atomic_walk(start, edge)
-#         path.append(start)
-
-#     return path
 
 
 def insert_list(l, into, at):
