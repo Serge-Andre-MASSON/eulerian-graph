@@ -2,7 +2,6 @@ from collections import deque
 from copy import deepcopy
 import random
 from eulerian_graph.graph import Graph
-from hypothesis import strategies as st
 
 
 def connexify(G: Graph):
