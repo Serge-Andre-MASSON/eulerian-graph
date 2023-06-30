@@ -10,6 +10,7 @@ def recursive_walk(G: Graph, node: int = None, path: list = []):
     if not G.is_eulerian():
         return []
     G = deepcopy(G)
+
     if node is None:
         node = get_starting_node(G)
 
@@ -18,9 +19,9 @@ def recursive_walk(G: Graph, node: int = None, path: list = []):
     edges = G.get_edges(node)
     while edges:
         u, v = choice(edges)
-        G.remove_edge(u, v)
         node = u if node == v else v
         current_path.append(node)
+        G.remove_edge(u, v)
         edges = G.get_edges(node)
 
     if not path:
@@ -36,16 +37,16 @@ def recursive_walk(G: Graph, node: int = None, path: list = []):
     return path
 
 
-def stack_walk(G: Graph, node: int = None, path=None):
+def stack_walk(G: Graph, node: int = None):
     if not G.is_eulerian():
         return []
     G = deepcopy(G)
+
     if node is None:
         node = get_starting_node(G)
     node_stack = [node]
 
-    if path is None:
-        path = []
+    path = []
 
     while node_stack:
         node = node_stack[-1]
@@ -61,7 +62,7 @@ def stack_walk(G: Graph, node: int = None, path=None):
             last_node = node_stack.pop()
             path.append(last_node)
 
-    return path[::-1]
+    return path[::-1] if node else path
 
 
 def get_starting_node(G: Graph):
