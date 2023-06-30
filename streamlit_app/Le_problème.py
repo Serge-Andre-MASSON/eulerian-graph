@@ -5,7 +5,7 @@ import streamlit as st
 from eulerian_graph.graph import Graph
 
 
-st.set_page_config(page_title="Le problème")
+st.set_page_config(page_title="Les ponts de Koenigsberg")
 st.sidebar.markdown("# Les septs ponts de Koenigsberg")
 
 st.markdown("# Le problème")
