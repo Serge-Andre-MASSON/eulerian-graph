@@ -20,7 +20,7 @@ def test_connexify_graph(edges):
 def test_eulerian_graph_without_odd_nodes(edges):
     G: Graph = Graph()
     G.add_edges_from(edges)
-    G = eulerify(G, 0)
+    G = eulerify(G, max_odd_nodes_count=0)
     assert is_connexe(G)
     assert len(G) >= 1
     assert G._odd_nodes_count() == 0
@@ -30,7 +30,7 @@ def test_eulerian_graph_without_odd_nodes(edges):
 def test_eulerian_graph_with_two_odd_nodes(edges):
     G: Graph = Graph()
     G.add_edges_from(edges)
-    G = eulerify(G, 2)
+    G = eulerify(G, max_odd_nodes_count=2)
     assert is_connexe(G)
     assert len(G) >= 1
     assert G._odd_nodes_count() <= 2

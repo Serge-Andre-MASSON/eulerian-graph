@@ -37,20 +37,25 @@ def modelisation():
 def recursive():
     st.markdown("""## Algorithme de Hierholzer""")
 
-    st.write("""L'implémentation proposée ici est une réécriture de la méthode proposée par Carl Hierholzer pour prouver l'existence d'une chaine dans un graphe donné. Une version optimisée est proposée dans la section suivante.""")
+    st.write("""L'algorithme présenté ici est une implémentation de la méthode proposée par Carl Hierholzer pour prouver l'existence d'une chaine dans un graphe donné. C'est en fait la démonstration que les conditions nécéssaires pour l'existence d'un cycle/d'une chaînes sont en fait suffisantes:""")
+    st.latex(
+        r"""\text{G admet une chaîne eulerienne} \Leftrightarrow \text{G a 0 ou 2 sommets d'ordre impair}""")
+
+    st.latex(
+        r"""\text{G admet un cycle eulerien} \Leftrightarrow \text{G n'a aucun sommets d'ordre impair}""")
 
     st.write("""Dans le cas où le graphe n'a aucun sommet impair on commence par choisir un sommet au hasard et on trace un chemin à partir de celui-ci. Puisque tous les sommets rencontrés en chemin sont d'ordre pair, le seul sommet sur lequel on peut être bloqué est le sommet de départ.""")
     st.write(
         """On obtient alors un cycle """)
     st.latex(r"""u_0,\ u_1,\ u_2,\ \text{ ... } u_n, u_0""")
     st.write(
-        """Si toutes les arêtes ont été utilisées alors c'est fini. Sinon on repart de n'importe quel sommet $v_0 = u_i$ du chemin déjà tracé ayant encore des arếtes, ce qui permet d'obtenir un nouveau cycle $v_0,\\ v_1,\\ v_2,\\ \\text{ ... } v_m, v_0$ que l'on peut insérer dans le cycle précédent en lieu et place du sommet qui avait encore des arêtes :""")
+        """Si toutes les arêtes ont été utilisées alors c'est fini. Sinon on repart de n'importe quel sommet $v_0 = u_i$ du chemin déjà tracé et ayant encore des arêtes. Cela permet d'obtenir un nouveau cycle $v_0,\\ v_1,\\ v_2,\\ \\text{ ... } v_m, v_0$ que l'on peut insérer dans le cycle précédent $v_0 = u_i$ :""")
     st.latex(
         r"""u_0,\ u_1,\ u_2,\ \text{ ... } u_{i-1}, v_0,\ v_1,\ \text{ ... } v_m, v_0, u_{i+1} \text{ ... } u_n, u_0""")
 
-    st.write("""On réitère alors le processus autant de fois que nécéssaire.""")
+    st.write("""On réitère le processus autant de fois que nécéssaire.""")
 
-    st.write("""Lorsque le graphe à deux sommets d'ordre impair, on choisit l'un de ces deux sommets comme point de départ et on trace un chemin à partir de celui-ci. Le seul sommet sur lequel on peut rester bloqué est l'autre sommet impair. Lorsque cela arrive, on note que les arêtes restantes (non utilisées) forment un graphe dans lequel tous les sommets sont d'ordre pair. On est donc ramené au cas précédent et on applique la même procédure à partir d'un sommet du chemin déjà tracé.""")
+    st.write("""Lorsque le graphe a deux sommets d'ordre impair, on choisit l'un des deux comme point de départ et on trace un chemin à partir de celui-ci. Le seul sommet sur lequel on peut rester bloqué est l'autre sommet impair. On note alors que les arêtes restantes (non utilisées) forment un graphe dans lequel tous les sommets sont d'ordre pair. On est donc ramené au cas précédent et on applique la même procédure à partir d'un sommet du chemin déjà tracé.""")
 
     code = getsource(recursive_walk)
     st.code(code)
@@ -58,7 +63,14 @@ def recursive():
 
 def stack():
     st.markdown("""## Algorithme de Hierholzer optimisé""")
-    st.write("""Cette implémntation suivante repose sur l'utilisation d'une pîle. Les raîsons pour lesquelles cette algorithme fonctionne sont les mêmes que celles évoquées dans la section précédente.""")
+    st.write(
+        """Cette implémentation est celle que l'on retrouve utilisée dans la librairie [networkx]({networkx_url}).""")
+
+    st.write("""Plutôt que d'uiliser un algorithme récursif en réinjectant à chaque appel l'historique du chemin déjà parcouru, on ne fait qu'un appel à la fonction et cet historique est conservé dans une pîle.""")
+    st.write("""On démarre d'un sommet impair s'il y en a ou de n'importe quel autre sinon et on parcourt le graphe tant que c'est possible en ajoutant au fur et à mesure les sommets que l'on traverse à la pîle.""")
+    st.write("""Lorsqu'il n'est plus possible d'avancer, on ajoute le sommet courant, qui est le dernier élèment de la pîle, au chemin que l'on cherche. On vide la pîle en ajoutant ces élèments au chemin tant que ces derniers n'ont pas d'arête disponible.""")
+    st.write("""Lorsqu'en remontant la pîle on tombe sur un sommet qui a encore des arêtes libres, on les parcourt autant que possible et lorsqu'on est bloqué, on recommence le processus décrit ci-dessus.""")
+    st.write("""De cette manière, on construit le chemin à rebours et lorsque il n'y a plus aucune arête dans le graphe, le chemin est complet. Il ne reste plus qu'à retourner ce chemin (à l'envers si on s'intéresse au sens du parcours).""")
 
     code = getsource(stack_walk)
     st.code(code)
