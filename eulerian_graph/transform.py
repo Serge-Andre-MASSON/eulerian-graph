@@ -42,12 +42,12 @@ def is_connexe(G: Graph):
     return _is_connexe(G, return_visited_nodes=False)
 
 
-def eulerify(G: Graph, odd_nodes_count: int = 2):
+def eulerify(G: Graph, max_odd_nodes_count: int = 2):
     G: Graph = connexify(G)
-    if G._odd_nodes_count() <= odd_nodes_count:
+    if G._odd_nodes_count() <= max_odd_nodes_count:
         return G
 
-    while G._odd_nodes_count() > odd_nodes_count:
+    while G._odd_nodes_count() > max_odd_nodes_count:
         odd_nodes = [node for node in G.nodes if G.order(node) % 2]
         u, v = random.sample(odd_nodes, k=2)
         G.add_edge(u, v)
